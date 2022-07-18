@@ -1,0 +1,17 @@
+library(dplyr)
+setwd("C:/Github/")
+Mech = read.csv("MechaCar_mpg.csv", header = TRUE, sep = ",")
+thing = lm(mpg ~ vehicle_length + vehicle_weight + spoiler_angle + ground_clearance + AWD, data= Mech)
+summary(thing) 
+Coil = read.csv("Suspension_Coil.csv", header = TRUE, sep = ",")
+View(Coil)
+Coils = Coil %>%
+  summarise(Mean = mean(PSI), Median = median(PSI), SD = sd(PSI), Variance = var(PSI))
+View(Coils)
+Coil_lot = Coil %>%
+  group_by(Manufacturing_Lot) %>% summarise(Mean = mean(PSI), Median = median(PSI), SD = sd(PSI), Variance = var(PSI))
+View(Coil_lot)
+work <- t.test(log10(Coil$PSI), mu=1500)
+t.test(log10(Coil$PSI), mu=1500, data = Coil,  subset = (PSI >= 1500 & Manufacturing_Lot == "Lot1"))
+t.test(log10(Coil$PSI), mu=1500, data = Coil,  subset = (PSI >= 1500 & Manufacturing_Lot == "Lot2"))
+t.test(log10(Coil$PSI), mu=1500, data = Coil,  subset = PSI >= 1500 & Manufacturing_Lot == "Lot3")
